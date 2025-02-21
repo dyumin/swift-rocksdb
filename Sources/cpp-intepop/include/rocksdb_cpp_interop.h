@@ -1,6 +1,5 @@
 #pragma once
 
-// #include "fast_pimpl.hpp"
 #include <rocksdb/db.h>
 #include <rocksdb/utilities/transaction_db.h>
 
@@ -16,7 +15,7 @@ public:
     const TransactionDBOptions& txn_db_options,
     const std::string& dbname) noexcept;
 
-  Iterator* NewIterator(const ReadOptions &options);
+  Iterator* NewIterator(const ReadOptions &options) noexcept;
 
   std::shared_ptr<rocksdb::TransactionDB> m_db;
 };

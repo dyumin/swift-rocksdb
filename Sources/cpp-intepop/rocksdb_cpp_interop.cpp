@@ -18,7 +18,7 @@ Status TransactionDB::Open(const Options &options,
   return status;
 }
 
-Iterator *TransactionDB::NewIterator(const ReadOptions &options) {
+Iterator *TransactionDB::NewIterator(const ReadOptions &options) noexcept {
 
   auto tx = m_db->BeginTransaction({}, {});
   auto txiterator = tx->GetIterator({});
@@ -26,6 +26,6 @@ Iterator *TransactionDB::NewIterator(const ReadOptions &options) {
   return m_db->NewIterator(options);
 }
 
-TransactionDB::~TransactionDB() {}
+TransactionDB::~TransactionDB() noexcept {}
 
 } // namespace swiftrocks
