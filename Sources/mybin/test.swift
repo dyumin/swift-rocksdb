@@ -1,8 +1,6 @@
 import rocksdb
 import cpp_intepop
 
-import swift_rocksdb
-
 @main
 struct App {
     static func main() {

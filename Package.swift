@@ -191,6 +191,7 @@ var rocksdbExclude = [
     "./rocksdb/utilities/options/options_util_test.cc",
     "./rocksdb/utilities/persistent_cache/hash_table_test.cc",
     "./rocksdb/utilities/persistent_cache/persistent_cache_test.cc",
+    "./rocksdb/utilities/persistent_cache/persistent_cache_bench.cc",
     "./rocksdb/utilities/simulator_cache/cache_simulator_test.cc",
     "./rocksdb/utilities/simulator_cache/sim_cache_test.cc",
     "./rocksdb/utilities/table_properties_collectors/compact_for_tiering_collector_test.cc",
@@ -246,7 +247,6 @@ var rocksdbExclude = [
     "./rocksdb/utilities/transactions/lock/range/range_tree/lib/COPYING.APACHEv2",
     "./rocksdb/utilities/transactions/lock/range/range_tree/lib/COPYING.AGPLv3",
 
-
     "./rocksdb/include/rocksdb/utilities/lua",
 ]
 
@@ -257,20 +257,20 @@ let package = Package(
         .executable(name: "mybin", targets: ["mybin"]),
         .library(
             name: "swift-rocksdb",
-            targets: ["rocksdb"])
+            targets: ["rocksdb"]),
     ],
     targets: [
         .executableTarget(
             name: "mybin",
             dependencies: [
-                "rocksdb", "cpp-intepop"
+                "rocksdb", "cpp-intepop",
             ],
-             swiftSettings: [.interoperabilityMode(.Cxx)]),
+            swiftSettings: [.interoperabilityMode(.Cxx)]),
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "swift-rocksdb",
-              swiftSettings: [.interoperabilityMode(.Cxx)]),
+            swiftSettings: [.interoperabilityMode(.Cxx)]),
         .testTarget(
             name: "swift-rocksdbTests",
             dependencies: ["swift-rocksdb"]
@@ -301,18 +301,26 @@ let package = Package(
                 // This is available on all modern Linux systems, and is needed for efficient
                 // MicroTimer implementation. Otherwise busy waits are used.
                 .define("HAVE_TIMERFD", .when(platforms: [.linux])),
-                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
-                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
+                .define(
+                    "ROCKSDB_PLATFORM_POSIX",
+                    .when(platforms: [.linux, .macOS])),
+                .define(
+                    "ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux, .macOS])),
                 .define("OS_LINUX", .when(platforms: [.linux])),
+                .define("OS_MACOSX", .when(platforms: [.macOS])),
                 .headerSearchPath("./rocksdb"),
             ],
             cxxSettings: [
                 // This is available on all modern Linux systems, and is needed for efficient
                 // MicroTimer implementation. Otherwise busy waits are used.
                 .define("HAVE_TIMERFD", .when(platforms: [.linux])),
-                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
-                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
+                .define(
+                    "ROCKSDB_PLATFORM_POSIX",
+                    .when(platforms: [.linux, .macOS])),
+                .define(
+                    "ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux, .macOS])),
                 .define("OS_LINUX", .when(platforms: [.linux])),
+                .define("OS_MACOSX", .when(platforms: [.macOS])),
                 .headerSearchPath("./rocksdb"),
             ],
             linkerSettings: [
@@ -325,7 +333,7 @@ let package = Package(
                 "rocksdb"
             ],
             sources: [
-                "./",
+                "./"
             ],
             publicHeadersPath: "./include",
             cSettings: [
@@ -347,7 +355,6 @@ let package = Package(
                 .headerSearchPath("./rocksdb"),
             ]),
     ],
-
 
     cxxLanguageStandard: .cxx17
 )
