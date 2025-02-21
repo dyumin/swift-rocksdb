@@ -211,12 +211,13 @@ var rocksdbExclude = [
     "./rocksdb/utilities/secondary_index/faiss_ivf_index_test.cc",
     "./rocksdb/utilities/secondary_index/faiss_ivf_index.cc",
 
+
     "./rocksdb/test_util/mock_time_env.cc",
     "./rocksdb/test_util/testharness.cc",
 
     "./rocksdb/utilities/env_mirror_test.cc",
     "./rocksdb/utilities/cassandra/test_utils.cc",
-    
+
     "./rocksdb/util/crc32c_ppc.c",
     "./rocksdb/util/crc32c_ppc_asm.S",
     "./rocksdb/util/build_version.cc.in",
@@ -245,6 +246,7 @@ var rocksdbExclude = [
     "./rocksdb/utilities/transactions/lock/range/range_tree/lib/COPYING.APACHEv2",
     "./rocksdb/utilities/transactions/lock/range/range_tree/lib/COPYING.AGPLv3",
 
+
     "./rocksdb/include/rocksdb/utilities/lua",
 ]
 
@@ -252,13 +254,23 @@ let package = Package(
     name: "swift-rocksdb",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
+        .executable(name: "mybin", targets: ["mybin"]),
         .library(
             name: "swift-rocksdb",
-            targets: ["swift-rocksdb"]),
+            targets: ["rocksdb"])
     ],
     targets: [
+        .executableTarget(
+            name: "mybin",
+            dependencies: [
+                "rocksdb", "cpp-intepop"
+            ],
+             swiftSettings: [.interoperabilityMode(.Cxx)]),
+        // Targets are the basic building blocks of a package, defining a module or a test suite.
+        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "swift-rocksdb"),
+            name: "swift-rocksdb",
+              swiftSettings: [.interoperabilityMode(.Cxx)]),
         .testTarget(
             name: "swift-rocksdbTests",
             dependencies: ["swift-rocksdb"]
@@ -303,11 +315,39 @@ let package = Package(
                 .define("OS_LINUX", .when(platforms: [.linux])),
                 .headerSearchPath("./rocksdb"),
             ],
-
             linkerSettings: [
                 .linkedLibrary("m")
             ]
         ),
+        .target(
+            name: "cpp-intepop",
+            dependencies: [
+                "rocksdb"
+            ],
+            sources: [
+                "./",
+            ],
+            publicHeadersPath: "./include",
+            cSettings: [
+                // This is available on all modern Linux systems, and is needed for efficient
+                // MicroTimer implementation. Otherwise busy waits are used.
+                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
+                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
+                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
+                .define("OS_LINUX", .when(platforms: [.linux])),
+                .headerSearchPath("./rocksdb"),
+            ],
+            cxxSettings: [
+                // This is available on all modern Linux systems, and is needed for efficient
+                // MicroTimer implementation. Otherwise busy waits are used.
+                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
+                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
+                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
+                .define("OS_LINUX", .when(platforms: [.linux])),
+                .headerSearchPath("./rocksdb"),
+            ]),
     ],
+
+
     cxxLanguageStandard: .cxx17
 )
