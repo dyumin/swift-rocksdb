@@ -10,8 +10,9 @@ using namespace rocksdb;
 using ColumnFamilyDescriptorVector = std::vector<ColumnFamilyDescriptor>;
 using ColumnFamilyHandlePointerVector = std::vector<ColumnFamilyHandle *>;
 
+using ColumnFamiliesVector = std::vector<std::string>;
 Status ListColumnFamilies(const DBOptions &db_options, const std::string &name,
-                          std::vector<std::string> *column_families);
+                          ColumnFamiliesVector *column_families);
 
 class TransactionDB {
 public:
