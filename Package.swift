@@ -258,6 +258,9 @@ let package = Package(
         .library(
             name: "swift-rocksdb",
             targets: ["rocksdb"]),
+        .library(
+            name: "cpp-intepop",
+            targets: ["cpp-intepop"]),
     ],
     targets: [
         .executableTarget(
