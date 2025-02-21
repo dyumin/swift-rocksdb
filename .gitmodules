@@ -1,3 +1,3 @@
-[submodule "Sources/rocksdb/rocksdb"]
+[submodule "rocksdb"]
 	path = Sources/rocksdb/rocksdb
-	url = https://github.com/facebook/rocksdb
+	url = https://github.com/facebook/rocksdb.git
