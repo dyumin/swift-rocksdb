@@ -256,8 +256,11 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .executable(name: "mybin", targets: ["mybin"]),
         .library(
-            name: "swift-rocksdb",
+            name: "rocksdb",
             targets: ["rocksdb"]),
+        .library(
+            name: "swift-rocksdb",
+            targets: ["swift-rocksdb"]),
         .library(
             name: "cpp-intepop",
             targets: ["cpp-intepop"]),
@@ -266,13 +269,14 @@ let package = Package(
         .executableTarget(
             name: "mybin",
             dependencies: [
-                "rocksdb", "cpp-intepop",
+                "rocksdb", "cpp-intepop", "swift-rocksdb"
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)]),
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "swift-rocksdb",
+            dependencies: [
+                "rocksdb",
+            ],
             swiftSettings: [.interoperabilityMode(.Cxx)]),
         .testTarget(
             name: "swift-rocksdbTests",
