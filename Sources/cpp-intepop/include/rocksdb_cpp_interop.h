@@ -58,6 +58,10 @@ inline Iterator GetIterator(const Transaction &transaction,
     return Iterator(transaction->GetIterator(options));
 }
 
+inline rocksdb::Iterator *GetIterator(const Iterator &iterator) noexcept {
+    return iterator.get();
+}
+
 inline Status Put(const Transaction &transaction, const Slice &key,
                   const Slice &value) noexcept {
     return transaction->Put(key, value);
@@ -66,14 +70,29 @@ inline Status Put(const Transaction &transaction, const Slice &key,
 inline bool Valid(const Iterator &iterator) noexcept {
     return iterator->Valid();
 }
+inline bool Valid(rocksdb::Iterator *const iterator) noexcept {
+    return iterator->Valid();
+}
 inline void SeekToFirst(const Iterator &iterator) noexcept {
     iterator->SeekToFirst();
 }
+inline void SeekToFirst(rocksdb::Iterator *const iterator) noexcept {
+    iterator->SeekToFirst();
+}
 inline Slice key(const Iterator &iterator) noexcept { return iterator->key(); }
+inline Slice key(rocksdb::Iterator *const iterator) noexcept {
+    return iterator->key();
+}
 inline Slice value(const Iterator &iterator) noexcept {
     return iterator->value();
 }
+inline Slice value(rocksdb::Iterator *const iterator) noexcept {
+    return iterator->value();
+}
 inline void Next(const Iterator &iterator) noexcept { return iterator->Next(); }
+inline void Next(rocksdb::Iterator *const iterator) noexcept {
+    return iterator->Next();
+}
 
 inline Status status(const Iterator &iterator) noexcept {
     return iterator->status();

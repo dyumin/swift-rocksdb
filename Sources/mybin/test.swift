@@ -51,7 +51,7 @@ struct App {
         }
         let three = "333"
         three.withCString { p in
-            status = transaction.Put(rocksdb.Slice(p), rocksdb.Slice(p))
+            status = transaction.Put(rocksdb.Slice(p, three.count), rocksdb.Slice(p, three.count))
         }
 
         let iterator = transaction.GetIterator(rocksdb.ReadOptions())
@@ -62,7 +62,7 @@ struct App {
         }
 
         for element in iterator {
-            print(element.0.ToString(), element.1.ToString())
+            print(element.key.ToString(), element.value.ToString())
         }
 
         print(iterator.contains { $0.0.ToString() == "1" })

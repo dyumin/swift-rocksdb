@@ -14,31 +14,36 @@ public class Iterator: IteratorProtocol {
     let handle: swiftrocks.Iterator
     @usableFromInline
     var first = true
+    @usableFromInline
+    let rocksDBIterator: OpaquePointer!  // to avoid double pointer hopping
 
     @inlinable
     init(handle: swiftrocks.Iterator) {
         self.handle = handle
-        swiftrocks.SeekToFirst(self.handle)
+        rocksDBIterator = swiftrocks.GetIterator(handle)
+        swiftrocks.SeekToFirst(rocksDBIterator)
     }
 
     @inlinable
-    public func next() -> (rocksdb.Slice, rocksdb.Slice)? {
+    public func next() -> (key: rocksdb.Slice, value: rocksdb.Slice)? {
         if first {
-            guard swiftrocks.Valid(handle) else {
+            guard swiftrocks.Valid(rocksDBIterator) else {
                 return nil
             }
             first = false
         } else {
-            swiftrocks.Next(handle)
-            guard swiftrocks.Valid(handle) else {
+            swiftrocks.Next(rocksDBIterator)
+            guard swiftrocks.Valid(rocksDBIterator) else {
                 return nil
             }
         }
 
-        return (swiftrocks.key(handle), swiftrocks.value(handle))
+        return (
+            swiftrocks.key(rocksDBIterator), swiftrocks.value(rocksDBIterator)
+        )
     }
 
-    public typealias Element = (rocksdb.Slice, rocksdb.Slice)
+    public typealias Element = (key: rocksdb.Slice, value: rocksdb.Slice)
 }
 
 extension swiftrocks.Iterator: Sequence {
