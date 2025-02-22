@@ -76,4 +76,8 @@ inline Slice value(const Iterator &iterator) noexcept {
 }
 inline void Next(const Iterator &iterator) noexcept { return iterator->Next(); }
 
+inline Status status(const Iterator &iterator) noexcept {
+    return iterator->status();
+}
+
 } // namespace swiftrocks

@@ -64,5 +64,7 @@ struct App {
         for element in iterator {
             print(element.0.ToString(), element.1.ToString())
         }
+
+        print(iterator.contains { $0.0.ToString() == "1" })
     }
 }
