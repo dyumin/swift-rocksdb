@@ -2,7 +2,6 @@
 
 #include <rocksdb/db.h>
 #include <rocksdb/utilities/transaction_db.h>
-#include <tuple>
 
 namespace swiftrocks {
 
