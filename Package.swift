@@ -212,7 +212,6 @@ var rocksdbExclude = [
     "./rocksdb/utilities/secondary_index/faiss_ivf_index_test.cc",
     "./rocksdb/utilities/secondary_index/faiss_ivf_index.cc",
 
-
     "./rocksdb/test_util/mock_time_env.cc",
     "./rocksdb/test_util/testharness.cc",
 
@@ -269,13 +268,13 @@ let package = Package(
         .executableTarget(
             name: "mybin",
             dependencies: [
-                "rocksdb", "cpp-intepop", "swift-rocksdb"
+                "rocksdb", "cpp-intepop", "swift-rocksdb",
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)]),
         .target(
             name: "swift-rocksdb",
             dependencies: [
-                "rocksdb",
+                "rocksdb", "cpp-intepop",
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)]),
         .testTarget(
