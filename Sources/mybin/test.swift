@@ -23,7 +23,7 @@ struct App {
         options.create_if_missing = true
         options.create_missing_column_families = true
 
-        var db = swiftrocks.Open(
+        let db = swiftrocks.Open(
             options, rocksdb.TransactionDBOptions(), columnFamilyDescriptors,
             &handles, "/tmp/rocks")
         guard db.__convertToBool() else {

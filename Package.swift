@@ -292,29 +292,29 @@ let package = Package(
             ],
             publicHeadersPath: "./rocksdb/include",
             cSettings: [
-                // This is available on all modern Linux systems, and is needed for efficient
-                // MicroTimer implementation. Otherwise busy waits are used.
-                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
                 .define(
                     "ROCKSDB_PLATFORM_POSIX",
-                    .when(platforms: [.linux, .macOS])),
+                    .when(platforms: [.linux, .macOS, .iOS])),
                 .define(
-                    "ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux, .macOS])),
+                    "ROCKSDB_LIB_IO_POSIX",
+                    .when(platforms: [.linux, .macOS, .iOS])),
                 .define("OS_LINUX", .when(platforms: [.linux])),
                 .define("OS_MACOSX", .when(platforms: [.macOS])),
+                .define("OS_MACOSX", .when(platforms: [.iOS])),
+                .define("IOS_CROSS_COMPILE", .when(platforms: [.iOS])),  // useless
                 .headerSearchPath("./rocksdb"),
             ],
             cxxSettings: [
-                // This is available on all modern Linux systems, and is needed for efficient
-                // MicroTimer implementation. Otherwise busy waits are used.
-                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
                 .define(
                     "ROCKSDB_PLATFORM_POSIX",
-                    .when(platforms: [.linux, .macOS])),
+                    .when(platforms: [.linux, .macOS, .iOS])),
                 .define(
-                    "ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux, .macOS])),
+                    "ROCKSDB_LIB_IO_POSIX",
+                    .when(platforms: [.linux, .macOS, .iOS])),
                 .define("OS_LINUX", .when(platforms: [.linux])),
                 .define("OS_MACOSX", .when(platforms: [.macOS])),
+                .define("OS_MACOSX", .when(platforms: [.iOS])),
+                .define("IOS_CROSS_COMPILE", .when(platforms: [.iOS])),  // useless
                 .headerSearchPath("./rocksdb"),
             ],
             linkerSettings: [
@@ -329,25 +329,7 @@ let package = Package(
             sources: [
                 "./"
             ],
-            publicHeadersPath: "./include",
-            cSettings: [
-                // This is available on all modern Linux systems, and is needed for efficient
-                // MicroTimer implementation. Otherwise busy waits are used.
-                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
-                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
-                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
-                .define("OS_LINUX", .when(platforms: [.linux])),
-                .headerSearchPath("./rocksdb"),
-            ],
-            cxxSettings: [
-                // This is available on all modern Linux systems, and is needed for efficient
-                // MicroTimer implementation. Otherwise busy waits are used.
-                .define("HAVE_TIMERFD", .when(platforms: [.linux])),
-                .define("ROCKSDB_PLATFORM_POSIX", .when(platforms: [.linux])),
-                .define("ROCKSDB_LIB_IO_POSIX", .when(platforms: [.linux])),
-                .define("OS_LINUX", .when(platforms: [.linux])),
-                .headerSearchPath("./rocksdb"),
-            ]),
+            publicHeadersPath: "./include"),
     ],
 
     cxxLanguageStandard: .cxx20
