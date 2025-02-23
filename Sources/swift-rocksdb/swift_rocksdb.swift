@@ -46,6 +46,7 @@ public class Iterator: IteratorProtocol {
     public typealias Element = (key: rocksdb.Slice, value: rocksdb.Slice)
 }
 
+// only one active iterator supported currently
 extension swiftrocks.Iterator: Sequence {
     @inlinable
     public func makeIterator() -> Iterator {
