@@ -34,9 +34,8 @@ inline TransactionDB Open(const Options &options,
                           const ColumnFamilyDescriptorVector &column_families,
                           ColumnFamilyHandlePointerVector *handles,
                           const std::string &dbname) noexcept {
-    // it crashes for some reason
-    //    m_columnDescriptors.reserve(
-    //        column_families.size()); // after this assighment will not throw
+    handles->reserve(
+        column_families.size()); // after this assighment will not throw
 
     rocksdb::TransactionDB *dbptr = nullptr;
     auto status = rocksdb::TransactionDB::Open(
