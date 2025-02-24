@@ -77,6 +77,18 @@ inline Status Get(const Transaction &transaction, const ReadOptions &options,
     return transaction->Get(options, key, value);
 }
 
+inline Status Put(const TransactionDB &transactionDB,
+                  const WriteOptions &options, const Slice &key,
+                  const Slice &value) noexcept {
+    return transactionDB->Put(options, key, value);
+}
+
+inline Status Get(const TransactionDB &transactionDB,
+                  const ReadOptions &options, const Slice &key,
+                  std::string *value) noexcept {
+    return transactionDB->Get(options, key, value);
+}
+
 inline bool Valid(const Iterator &iterator) noexcept {
     return iterator->Valid();
 }
