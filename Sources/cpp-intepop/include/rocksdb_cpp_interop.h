@@ -2,6 +2,8 @@
 
 #include <rocksdb/db.h>
 #include <rocksdb/utilities/transaction_db.h>
+#include <swift/bridging>
+
 
 namespace swiftrocks {
 
@@ -29,7 +31,13 @@ DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
     transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
 }
 
-inline TransactionDB Open(const Options &options,
+struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult
+{
+    TransactionDB db;
+    Status status;
+};
+
+inline TransactionDBOpenResult Open(const Options &options,
                           const TransactionDBOptions &txn_db_options,
                           const ColumnFamilyDescriptorVector &column_families,
                           ColumnFamilyHandlePointerVector *handles,
@@ -41,7 +49,7 @@ inline TransactionDB Open(const Options &options,
     auto status = rocksdb::TransactionDB::Open(
         options, txn_db_options, dbname, column_families, handles, &dbptr);
 
-    return TransactionDB(dbptr);
+    return {TransactionDB(dbptr), status};
 }
 
 inline Transaction

@@ -9,6 +9,19 @@ extension rocksdb.Status: Error, CustomStringConvertible, @unchecked Sendable {
     }
 }
 
+extension swiftrocks.TransactionDBOpenResult {
+    @inlinable
+    public consuming func asResult() -> Result<
+        swiftrocks.TransactionDB, rocksdb.Status
+    > {
+        if self.status.ok() {
+            return Result.success(self.db)
+        } else {
+            return Result.failure(self.status)
+        }
+    }
+}
+
 public class Iterator: IteratorProtocol {
     @usableFromInline
     let handle: swiftrocks.Iterator

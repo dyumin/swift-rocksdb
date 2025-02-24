@@ -23,13 +23,14 @@ struct App {
         options.create_if_missing = true
         options.create_missing_column_families = true
 
-        let db = swiftrocks.Open(
+        let dbOpenResult = swiftrocks.Open(
             options, rocksdb.TransactionDBOptions(), columnFamilyDescriptors,
             &handles, "/tmp/rocks")
-        guard db.__convertToBool() else {
-            print("failed to open db")
-            return
+
+        guard dbOpenResult.status.ok() else {
+            throw dbOpenResult.status
         }
+        let db = dbOpenResult.db
         defer {
             handles.forEach { swiftrocks.DestroyColumnFamilyHandle(db, $0) }
         }
@@ -51,7 +52,8 @@ struct App {
         }
         let three = "333"
         three.withCString { p in
-            status = transaction.Put(rocksdb.Slice(p, three.count), rocksdb.Slice(p, three.count))
+            status = transaction.Put(
+                rocksdb.Slice(p, three.count), rocksdb.Slice(p, three.count))
         }
 
         let iterator = transaction.GetIterator(rocksdb.ReadOptions())
