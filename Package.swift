@@ -5,6 +5,14 @@ import PackageDescription
 
 import class Foundation.FileManager
 
+let librarySettings: [SwiftSetting] = [.interoperabilityMode(.Cxx)]
+
+let executableSettings: [SwiftSetting] =
+    librarySettings + [
+        .unsafeFlags(
+            ["-cross-module-optimization"], .when(configuration: .release))
+    ]
+
 var rocksdbExclude = [
     "./rocksdb/cache/cache_bench.cc",
     "./rocksdb/cache/cache_reservation_manager_test.cc",
@@ -258,13 +266,13 @@ let package = Package(
             dependencies: [
                 "rocksdb", "cpp-intepop", "swift-rocksdb",
             ],
-            swiftSettings: [.interoperabilityMode(.Cxx)]),
+            swiftSettings: executableSettings),
         .target(
             name: "swift-rocksdb",
             dependencies: [
                 "rocksdb", "cpp-intepop",
             ],
-            swiftSettings: [.interoperabilityMode(.Cxx)]),
+            swiftSettings: librarySettings),
         .testTarget(
             name: "swift-rocksdbTests",
             dependencies: ["swift-rocksdb"]
