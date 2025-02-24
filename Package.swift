@@ -337,7 +337,10 @@ let package = Package(
             sources: [
                 "./"
             ],
-            publicHeadersPath: "./include"),
+           publicHeadersPath: "./include",
+           cxxSettings: [
+               .unsafeFlags(["-Xclang", "-fno-cxx-modules"])
+           ]),
     ],
 
     cxxLanguageStandard: .cxx20
