@@ -5,10 +5,19 @@ import swift_rocksdb
 @main
 struct App {
     static func main() throws {
-        var existingColumnFamilies = swiftrocks.ColumnFamiliesVector()
+        var options = rocksdb.Options()
+        options.create_if_missing = true
+        options.create_missing_column_families = true
+
+        var existingColumnFamilies = swiftrocks.ColumnFamiliesVector([
+            rocksdb.kDefaultColumnFamilyName
+        ])
         var status = swiftrocks.ListColumnFamilies(
             rocksdb.DBOptions(), "/tmp/rocks", &existingColumnFamilies)
-        guard status.ok() else {
+        guard
+            status.ok()
+                || status == .PathNotFound() && options.create_if_missing
+        else {
             throw status
         }
 
@@ -18,10 +27,6 @@ struct App {
                     $0, rocksdb.ColumnFamilyOptions())
             }))
         var handles = swiftrocks.ColumnFamilyHandlePointerVector()
-
-        var options = rocksdb.Options()
-        options.create_if_missing = true
-        options.create_missing_column_families = true
 
         let dbOpenResult = swiftrocks.Open(
             options, rocksdb.TransactionDBOptions(), columnFamilyDescriptors,
@@ -68,5 +73,16 @@ struct App {
         }
 
         print(iterator.contains { $0.0.ToString() == "1" })
+
+        try! two.withCString({
+            var value = std.string()
+            status = transaction.Get(
+                rocksdb.ReadOptions(), rocksdb.Slice($0), &value)
+            guard status.ok()
+            else {
+                throw status
+            }
+            print(value)
+        })
     }
 }

@@ -92,4 +92,14 @@ extension swiftrocks.Transaction {
     {
         return swiftrocks.Put(self, key, value)
     }
+
+    @inlinable
+    public func Get(
+        _ readOptions: rocksdb.ReadOptions, _ key: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> rocksdb.Status
+    {
+        return swiftrocks.Get(self, readOptions, key, value)
+    }
 }

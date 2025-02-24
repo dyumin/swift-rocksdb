@@ -4,7 +4,6 @@
 #include <rocksdb/utilities/transaction_db.h>
 #include <swift/bridging>
 
-
 namespace swiftrocks {
 
 using namespace rocksdb;
@@ -31,17 +30,16 @@ DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
     transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
 }
 
-struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult
-{
+struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult {
     TransactionDB db;
     Status status;
 };
 
-inline TransactionDBOpenResult Open(const Options &options,
-                          const TransactionDBOptions &txn_db_options,
-                          const ColumnFamilyDescriptorVector &column_families,
-                          ColumnFamilyHandlePointerVector *handles,
-                          const std::string &dbname) noexcept {
+inline TransactionDBOpenResult
+Open(const Options &options, const TransactionDBOptions &txn_db_options,
+     const ColumnFamilyDescriptorVector &column_families,
+     ColumnFamilyHandlePointerVector *handles,
+     const std::string &dbname) noexcept {
     handles->reserve(
         column_families.size()); // after this assighment will not throw
 
@@ -72,6 +70,11 @@ inline rocksdb::Iterator *GetIterator(const Iterator &iterator) noexcept {
 inline Status Put(const Transaction &transaction, const Slice &key,
                   const Slice &value) noexcept {
     return transaction->Put(key, value);
+}
+
+inline Status Get(const Transaction &transaction, const ReadOptions &options,
+                  const Slice &key, std::string *value) noexcept {
+    return transaction->Get(options, key, value);
 }
 
 inline bool Valid(const Iterator &iterator) noexcept {
