@@ -23,8 +23,10 @@ struct App {
 
         let columnFamilyDescriptors = swiftrocks.ColumnFamilyDescriptorVector(
             Set(existingColumnFamilies + ["mycf1", "mycf2"]).map({
-                rocksdb.ColumnFamilyDescriptor(
-                    $0, rocksdb.ColumnFamilyOptions())
+                var cfo = rocksdb.ColumnFamilyOptions()
+                cfo.disable_auto_compactions = true  // there seems to be a bug, see https://github.com/facebook/rocksdb/issues/12888
+                return rocksdb.ColumnFamilyDescriptor(
+                    $0, cfo)
             }))
         var handles = swiftrocks.ColumnFamilyHandlePointerVector()
 
@@ -39,6 +41,12 @@ struct App {
         defer {
             handles.forEach { swiftrocks.DestroyColumnFamilyHandle(db, $0) }
         }
+
+        status = db.EnableAutoCompaction(handles)
+        guard status.ok() else {
+            throw dbOpenResult.status
+        }
+
         //        status = db.Open()
         //        if !status.ok() {
         //            print(status)

@@ -76,6 +76,14 @@ extension swiftrocks.TransactionDB {
         return swiftrocks.BeginTransaction(
             self, writeOptions, transactionOptions)
     }
+
+    @inlinable
+    public func EnableAutoCompaction(
+        _ columnFamilyHandles: swiftrocks.ColumnFamilyHandlePointerVector
+    ) -> rocksdb.Status {
+        return swiftrocks.EnableAutoCompaction(
+            self, columnFamilyHandles)
+    }
 }
 
 extension swiftrocks.Transaction {
