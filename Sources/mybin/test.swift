@@ -92,5 +92,8 @@ struct App {
             }
             print(value)
         })
+
+        status = transaction.Commit()
+        guard status.ok() else { throw status }
     }
 }

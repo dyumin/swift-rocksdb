@@ -102,6 +102,13 @@ extension swiftrocks.Transaction {
     }
 
     @inlinable
+    public func Commit()
+        -> rocksdb.Status
+    {
+        return swiftrocks.Commit(self)
+    }
+
+    @inlinable
     public func Get(
         _ readOptions: rocksdb.ReadOptions, _ key: rocksdb.Slice,
         _ value: UnsafeMutablePointer<std.string>!

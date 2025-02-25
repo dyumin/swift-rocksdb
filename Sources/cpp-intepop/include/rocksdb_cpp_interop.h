@@ -62,6 +62,10 @@ inline Iterator GetIterator(const Transaction &transaction,
   return Iterator(transaction->GetIterator(options));
 }
 
+inline Status Commit(const Transaction &transaction) noexcept {
+  return transaction->Commit();
+}
+
 inline rocksdb::Iterator *GetIterator(const Iterator &iterator) noexcept {
   return iterator.get();
 }
