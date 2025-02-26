@@ -67,34 +67,6 @@ extension swiftrocks.Iterator: Sequence {
     }
 }
 
-extension swiftrocks.TransactionDB {
-    @inlinable
-    public func BeginTransaction(
-        _ writeOptions: rocksdb.WriteOptions,
-        _ transactionOptions: rocksdb.TransactionOptions
-    ) -> swiftrocks.Transaction {
-        return swiftrocks.BeginTransaction(
-            self, writeOptions, transactionOptions)
-    }
-
-    @inlinable
-    public func EnableAutoCompaction(
-        _ columnFamilyHandles: swiftrocks.ColumnFamilyHandlePointerVector
-    ) -> rocksdb.Status {
-        return swiftrocks.EnableAutoCompaction(
-            self, columnFamilyHandles)
-    }
-
-    public func CreateColumnFamilies(
-        _ columnFamilyOptions: rocksdb.ColumnFamilyOptions,
-        _ columnFamilyNames: swiftrocks.ColumnFamiliesVector,
-        _ columnFamilyHandles: inout swiftrocks.ColumnFamilyHandlePointerVector
-    ) -> rocksdb.Status {
-        return swiftrocks.CreateColumnFamilies(
-            self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
-    }
-}
-
 extension swiftrocks.Transaction {
     @inlinable
     public func GetIterator(
@@ -147,5 +119,32 @@ extension swiftrocks.TransactionDB {
         -> rocksdb.Status
     {
         return swiftrocks.Get(self, readOptions, key, value)
+    }
+
+    @inlinable
+    public func BeginTransaction(
+        _ writeOptions: rocksdb.WriteOptions,
+        _ transactionOptions: rocksdb.TransactionOptions
+    ) -> swiftrocks.Transaction {
+        return swiftrocks.BeginTransaction(
+            self, writeOptions, transactionOptions)
+    }
+
+    @inlinable
+    public func EnableAutoCompaction(
+        _ columnFamilyHandles: swiftrocks.ColumnFamilyHandlePointerVector
+    ) -> rocksdb.Status {
+        return swiftrocks.EnableAutoCompaction(
+            self, columnFamilyHandles)
+    }
+
+    @inlinable
+    public func CreateColumnFamilies(
+        _ columnFamilyOptions: rocksdb.ColumnFamilyOptions,
+        _ columnFamilyNames: swiftrocks.ColumnFamiliesVector,
+        _ columnFamilyHandles: inout swiftrocks.ColumnFamilyHandlePointerVector
+    ) -> rocksdb.Status {
+        return swiftrocks.CreateColumnFamilies(
+            self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
     }
 }
