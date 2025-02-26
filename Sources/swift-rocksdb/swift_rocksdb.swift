@@ -84,6 +84,15 @@ extension swiftrocks.TransactionDB {
         return swiftrocks.EnableAutoCompaction(
             self, columnFamilyHandles)
     }
+
+    public func CreateColumnFamilies(
+        _ columnFamilyOptions: rocksdb.ColumnFamilyOptions,
+        _ columnFamilyNames: swiftrocks.ColumnFamiliesVector,
+        _ columnFamilyHandles: inout swiftrocks.ColumnFamilyHandlePointerVector
+    ) -> rocksdb.Status {
+        return swiftrocks.CreateColumnFamilies(
+            self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
+    }
 }
 
 extension swiftrocks.Transaction {

@@ -29,6 +29,15 @@ DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
   transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
 }
 
+inline Status
+CreateColumnFamilies(const TransactionDB &transactionDB,
+                     const ColumnFamilyOptions &options,
+                     const std::vector<std::string> &column_family_names,
+                     std::vector<ColumnFamilyHandle *> *handles) noexcept {
+  return transactionDB->CreateColumnFamilies(options, column_family_names,
+                                             handles);
+}
+
 struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult {
   TransactionDB db;
   Status status;
