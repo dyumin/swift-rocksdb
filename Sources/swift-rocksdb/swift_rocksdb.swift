@@ -188,3 +188,18 @@ extension swiftrocks.TransactionDB {
             self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
     }
 }
+
+extension rocksdb.Slice {
+    @inlinable
+    public func asArray() -> [UInt8] {
+        if self.empty() {
+            return []
+        }
+        return .init(
+            unsafeUninitializedCapacity: self.size(),
+            initializingWith: { buffer, initializedCount in
+                memcpy(buffer.baseAddress!, self.data(), self.size())
+                initializedCount = self.size()
+            })
+    }
+}

@@ -76,7 +76,8 @@ struct App {
 
         iterator.dropFirst(1).filter({ $0.0.ToString() != "22" }).forEach {
             element in
-            print(element.0.ToString(), element.1.ToString())
+            let key = String(decoding: element.0.asArray(), as: UTF8.self)
+            print(key, element.1.ToString())
         }
 
         for element in iterator {
