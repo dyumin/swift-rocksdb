@@ -80,6 +80,12 @@ inline Iterator GetIterator(const Transaction &transaction,
   return Iterator(transaction->GetIterator(options));
 }
 
+inline Iterator GetIterator(const Transaction &transaction,
+                            const ReadOptions &read_options,
+                            ColumnFamilyHandle *column_family) noexcept {
+  return Iterator(transaction->GetIterator(read_options, column_family));
+}
+
 inline Status Commit(const Transaction &transaction) noexcept {
   return transaction->Commit();
 }

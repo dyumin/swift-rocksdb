@@ -76,6 +76,14 @@ extension swiftrocks.Transaction {
     }
 
     @inlinable
+    public func GetIterator(
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!,
+        _ options: rocksdb.ReadOptions
+    ) -> swiftrocks.Iterator {
+        return swiftrocks.GetIterator(self, options, columnFamily)
+    }
+
+    @inlinable
     public func Put(_ key: rocksdb.Slice, _ value: rocksdb.Slice)
         -> rocksdb.Status
     {
