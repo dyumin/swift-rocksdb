@@ -43,11 +43,12 @@ struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult {
   Status status;
 };
 
-inline uint32_t GetID(const ColumnFamilyHandle* const handle) noexcept {
+inline uint32_t GetID(const ColumnFamilyHandle *const handle) noexcept {
   return handle->GetID();
 }
 
-inline const std::string &GetName(const ColumnFamilyHandle* const handle) noexcept {
+inline const std::string &
+GetName(const ColumnFamilyHandle *const handle) noexcept {
   return handle->GetName();
 }
 
@@ -92,9 +93,27 @@ inline Status Put(const Transaction &transaction, const Slice &key,
   return transaction->Put(key, value);
 }
 
+inline Status Put(const Transaction &transaction,
+                  ColumnFamilyHandle *column_family, const Slice &key,
+                  const Slice &value) noexcept {
+  return transaction->Put(column_family, key, value);
+}
+
 inline Status Get(const Transaction &transaction, const ReadOptions &options,
                   const Slice &key, std::string *value) noexcept {
   return transaction->Get(options, key, value);
+}
+
+inline Status Get(const Transaction &transaction, const ReadOptions &options,
+                  ColumnFamilyHandle *column_family, const Slice &key,
+                  std::string *value) noexcept {
+  return transaction->Get(options, column_family, key, value);
+}
+
+inline Status Delete(const Transaction &transaction,
+                     ColumnFamilyHandle *column_family, const Slice &key,
+                     const bool assume_tracked = false) noexcept {
+  return transaction->Delete(column_family, key, assume_tracked);
 }
 
 inline Status Put(const TransactionDB &transactionDB,

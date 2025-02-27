@@ -83,10 +83,14 @@ extension swiftrocks.Transaction {
     }
 
     @inlinable
-    public func Commit()
+    public func Put(
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!,
+        _ key: rocksdb.Slice,
+        _ value: rocksdb.Slice
+    )
         -> rocksdb.Status
     {
-        return swiftrocks.Commit(self)
+        return swiftrocks.Put(self, columnFamily, key, value)
     }
 
     @inlinable
@@ -97,6 +101,34 @@ extension swiftrocks.Transaction {
         -> rocksdb.Status
     {
         return swiftrocks.Get(self, readOptions, key, value)
+    }
+
+    @inlinable
+    public func Get(
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!,
+        _ readOptions: rocksdb.ReadOptions, _ key: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> rocksdb.Status
+    {
+        return swiftrocks.Get(self, readOptions, columnFamily, key, value)
+    }
+
+    @inlinable
+    public func Delete(
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!,
+        _ key: rocksdb.Slice
+    )
+        -> rocksdb.Status
+    {
+        return swiftrocks.Delete(self, columnFamily, key)
+    }
+
+    @inlinable
+    public func Commit()
+        -> rocksdb.Status
+    {
+        return swiftrocks.Commit(self)
     }
 }
 
