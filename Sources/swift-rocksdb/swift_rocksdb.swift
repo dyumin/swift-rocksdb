@@ -148,13 +148,3 @@ extension swiftrocks.TransactionDB {
             self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
     }
 }
-
-extension rocksdb.ColumnFamilyHandle {
-    func GetID() -> UInt32 {
-        return swiftrocks.GetID(self)
-    }
-
-    func GetName() -> UnsafePointer<std.string> {
-        return swiftrocks.GetName(self)
-    }
-}

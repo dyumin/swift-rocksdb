@@ -34,6 +34,9 @@ struct App {
             options, rocksdb.TransactionDBOptions(), columnFamilyDescriptors,
             &handles, "/tmp/rocks")
 
+        let columnID = swiftrocks.GetName(handles.first!)
+        print(columnID.pointee)
+
         guard dbOpenResult.status.ok() else {
             throw dbOpenResult.status
         }
