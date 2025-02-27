@@ -43,6 +43,14 @@ struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult {
   Status status;
 };
 
+inline uint32_t GetID(const ColumnFamilyHandle &handle) noexcept {
+  return handle.GetID();
+}
+
+inline const std::string &GetName(const ColumnFamilyHandle &handle) noexcept {
+  return handle.GetName();
+}
+
 inline TransactionDBOpenResult
 Open(const Options &options, const TransactionDBOptions &txn_db_options,
      const ColumnFamilyDescriptorVector &column_families,
