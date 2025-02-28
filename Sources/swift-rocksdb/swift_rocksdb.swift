@@ -202,4 +202,8 @@ extension rocksdb.Slice {
                 initializedCount = self.size()
             })
     }
+
+    init(_ staticString: StaticString) {
+        self.init(staticString.utf8Start, staticString.utf8CodeUnitCount)
+    }
 }
