@@ -203,7 +203,8 @@ extension rocksdb.Slice {
             })
     }
 
-    init(_ staticString: StaticString) {
+    @inlinable
+    public init(_ staticString: StaticString) {
         self.init(staticString.utf8Start, staticString.utf8CodeUnitCount)
     }
 }
