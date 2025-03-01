@@ -18,7 +18,7 @@ inline Status ListColumnFamilies(const DBOptions &db_options,
   return rocksdb::DB::ListColumnFamilies(db_options, name, column_families);
 }
 
-using Transaction = std::unique_ptr<Transaction>;
+using Transaction = std::shared_ptr<Transaction>;
 using Iterator = std::shared_ptr<Iterator>;
 
 using TransactionDB = std::unique_ptr<TransactionDB>;
