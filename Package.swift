@@ -310,6 +310,7 @@ let package = Package(
                 .define("OS_MACOSX", .when(platforms: [.macOS])),
                 .define("OS_MACOSX", .when(platforms: [.iOS])),
                 .define("IOS_CROSS_COMPILE", .when(platforms: [.iOS])),  // useless
+                .define("NDEBUG", .when(configuration: .release)),
                 .headerSearchPath("./rocksdb"),
             ],
             cxxSettings: [
@@ -323,6 +324,8 @@ let package = Package(
                 .define("OS_MACOSX", .when(platforms: [.macOS])),
                 .define("OS_MACOSX", .when(platforms: [.iOS])),
                 .define("IOS_CROSS_COMPILE", .when(platforms: [.iOS])),  // useless
+                .define("NDEBUG", .when(configuration: .release)),
+                .define("ROCKSDB_USE_RTTI", .when(configuration: .debug)),
                 .headerSearchPath("./rocksdb"),
             ],
             linkerSettings: [
