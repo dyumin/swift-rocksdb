@@ -134,6 +134,12 @@ inline Status Get(const TransactionDB &transactionDB,
   return transactionDB->Get(options, key, value);
 }
 
+inline Status Get(const TransactionDB &transactionDB,
+                  const ReadOptions &options, ColumnFamilyHandle *column_family,
+                  const Slice &key, std::string *value) noexcept {
+  return transactionDB->Get(options, column_family, key, value);
+}
+
 inline Status EnableAutoCompaction(
     const TransactionDB &transactionDB,
     const ColumnFamilyHandlePointerVector &column_family_handles) noexcept {
