@@ -162,6 +162,17 @@ extension swiftrocks.TransactionDB {
     }
 
     @inlinable
+    public func Get(
+        _ readOptions: rocksdb.ReadOptions,
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!, _ key: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> rocksdb.Status
+    {
+        return swiftrocks.Get(self, readOptions, columnFamily, key, value)
+    }
+
+    @inlinable
     public func BeginTransaction(
         _ writeOptions: rocksdb.WriteOptions,
         _ transactionOptions: rocksdb.TransactionOptions
