@@ -140,6 +140,12 @@ inline Status Get(const TransactionDB &transactionDB,
   return transactionDB->Get(options, column_family, key, value);
 }
 
+inline Iterator NewIterator(const TransactionDB &transactionDB,
+                            const ReadOptions &options,
+                            ColumnFamilyHandle *column_family) noexcept {
+  return Iterator(transactionDB->NewIterator(options, column_family));
+}
+
 inline Status EnableAutoCompaction(
     const TransactionDB &transactionDB,
     const ColumnFamilyHandlePointerVector &column_family_handles) noexcept {
