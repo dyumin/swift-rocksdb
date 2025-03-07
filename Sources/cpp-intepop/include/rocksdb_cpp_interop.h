@@ -29,6 +29,12 @@ DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
   transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
 }
 
+inline bool GetProperty(const TransactionDB &transactionDB,
+                        ColumnFamilyHandle *column_family,
+                        const Slice &property, std::string *value) noexcept {
+  return transactionDB->GetProperty(column_family, property, value);
+}
+
 inline Status
 CreateColumnFamilies(const TransactionDB &transactionDB,
                      const ColumnFamilyOptions &options,

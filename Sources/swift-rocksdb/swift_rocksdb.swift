@@ -208,6 +208,17 @@ extension swiftrocks.TransactionDB {
         return swiftrocks.CreateColumnFamilies(
             self, columnFamilyOptions, columnFamilyNames, &columnFamilyHandles)
     }
+
+    @inlinable
+    public func GetProperty(
+        _ columnFamily: UnsafeMutablePointer<rocksdb.ColumnFamilyHandle>!,
+        _ property: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> Bool
+    {
+        return swiftrocks.GetProperty(self, columnFamily, property, value)
+    }
 }
 
 extension rocksdb.Slice {
