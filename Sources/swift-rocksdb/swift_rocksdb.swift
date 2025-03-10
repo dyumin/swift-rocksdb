@@ -1,6 +1,7 @@
 import CxxStdlib
 import cpp_intepop
 import rocksdb
+import Foundation // Data
 
 extension rocksdb.Status: Error, CustomStringConvertible, @unchecked Sendable {
     @inlinable
