@@ -248,6 +248,7 @@ extension rocksdb.Slice {
 }
 
 extension rocksdb.ReadOptions {
+    @inlinable
     public static func with(
         _ populator: (inout Self) throws -> Void
     ) rethrows -> Self {
@@ -258,6 +259,7 @@ extension rocksdb.ReadOptions {
 }
 
 extension rocksdb.Options {
+    @inlinable
     public static func with(
         _ populator: (inout Self) throws -> Void
     ) rethrows -> Self {
@@ -268,6 +270,7 @@ extension rocksdb.Options {
 }
 
 extension rocksdb.WriteOptions {
+    @inlinable
     public static func with(
         _ populator: (inout Self) throws -> Void
     ) rethrows -> Self {
