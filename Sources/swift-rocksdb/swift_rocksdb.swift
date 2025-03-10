@@ -246,3 +246,33 @@ extension rocksdb.Slice {
         self.init(staticString.utf8Start, staticString.utf8CodeUnitCount)
     }
 }
+
+extension rocksdb.ReadOptions {
+    public static func with(
+        _ populator: (inout Self) throws -> Void
+    ) rethrows -> Self {
+        var readOptions = Self()
+        try populator(&readOptions)
+        return readOptions
+    }
+}
+
+extension rocksdb.Options {
+    public static func with(
+        _ populator: (inout Self) throws -> Void
+    ) rethrows -> Self {
+        var options = Self()
+        try populator(&options)
+        return options
+    }
+}
+
+extension rocksdb.WriteOptions {
+    public static func with(
+        _ populator: (inout Self) throws -> Void
+    ) rethrows -> Self {
+        var writeOptions = Self()
+        try populator(&writeOptions)
+        return writeOptions
+    }
+}
