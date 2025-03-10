@@ -236,6 +236,11 @@ extension rocksdb.Slice {
     }
 
     @inlinable
+    public func asData() -> Data {
+        return Data(bytes: self.data(), count: self.size())
+    }
+
+    @inlinable
     public init(_ staticString: StaticString) {
         self.init(staticString.utf8Start, staticString.utf8CodeUnitCount)
     }
