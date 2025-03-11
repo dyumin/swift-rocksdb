@@ -82,10 +82,10 @@ Open(const Options &options, const TransactionDBOptions &txn_db_options,
 inline DBOpenResult
 OpenForReadOnly(const Options &options, const std::string &name,
                 bool error_if_wal_file_exists = false) noexcept {
-  std::unique_ptr<rocksdb::DB> *dbptr;
-  auto status = rocksdb::DB::OpenForReadOnly(options, name, dbptr,
+  std::unique_ptr<rocksdb::DB> dbptr;
+  auto status = rocksdb::DB::OpenForReadOnly(options, name, &dbptr,
                                              error_if_wal_file_exists);
-  return {DB(dbptr ? std::move(*dbptr) : DB()), std::move(status)};
+  return {DB(dbptr ? std::move(dbptr) : DB()), std::move(status)};
 }
 
 inline Status Get(const DB &db, const ReadOptions &options, const Slice &key,
