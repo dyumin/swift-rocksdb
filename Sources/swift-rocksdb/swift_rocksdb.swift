@@ -1,7 +1,7 @@
 import CxxStdlib
+import Foundation  // Data
 import cpp_intepop
 import rocksdb
-import Foundation // Data
 
 extension rocksdb.Status: Error, CustomStringConvertible, @unchecked Sendable {
     @inlinable
@@ -65,6 +65,18 @@ extension swiftrocks.Iterator: Sequence {
     @inlinable
     public func makeIterator() -> Iterator {
         return Iterator(handle: self)
+    }
+}
+
+extension swiftrocks.DB {
+    @inlinable
+    public func Get(
+        _ readOptions: rocksdb.ReadOptions, _ key: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> rocksdb.Status
+    {
+        return swiftrocks.Get(self, readOptions, key, value)
     }
 }
 

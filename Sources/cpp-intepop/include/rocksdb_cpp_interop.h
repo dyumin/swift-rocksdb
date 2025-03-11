@@ -22,6 +22,7 @@ using Transaction = std::shared_ptr<Transaction>;
 using Iterator = std::shared_ptr<Iterator>;
 
 using TransactionDB = std::unique_ptr<TransactionDB>;
+using DB = std::unique_ptr<DB>;
 
 inline void
 DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
@@ -49,6 +50,11 @@ struct __attribute__((swift_attr("@frozen"))) TransactionDBOpenResult {
   Status status;
 };
 
+struct __attribute__((swift_attr("@frozen"))) DBOpenResult {
+  DB db;
+  Status status;
+};
+
 inline uint32_t GetID(const ColumnFamilyHandle *const handle) noexcept {
   return handle->GetID();
 }
@@ -70,7 +76,21 @@ Open(const Options &options, const TransactionDBOptions &txn_db_options,
   auto status = rocksdb::TransactionDB::Open(options, txn_db_options, dbname,
                                              column_families, handles, &dbptr);
 
-  return {TransactionDB(dbptr), status};
+  return {TransactionDB(dbptr), std::move(status)};
+}
+
+inline DBOpenResult
+OpenForReadOnly(const Options &options, const std::string &name,
+                bool error_if_wal_file_exists = false) noexcept {
+  std::unique_ptr<rocksdb::DB> *dbptr;
+  auto status = rocksdb::DB::OpenForReadOnly(options, name, dbptr,
+                                             error_if_wal_file_exists);
+  return {DB(dbptr ? std::move(*dbptr) : DB()), std::move(status)};
+}
+
+inline Status Get(const DB &db, const ReadOptions &options, const Slice &key,
+                  std::string *value) noexcept {
+  return db->Get(options, key, value);
 }
 
 inline Transaction
