@@ -80,7 +80,7 @@ extension swiftrocks.DB {
     }
 }
 
-extension swiftrocks.Transaction {
+extension swiftrocks.Transaction: @unchecked Sendable {
     @inlinable
     public func GetIterator(
         _ options: rocksdb.ReadOptions
@@ -153,7 +153,9 @@ extension swiftrocks.Transaction {
     }
 }
 
-extension swiftrocks.TransactionDB {
+extension swiftrocks.ColumnFamilyHandlePointerVector: @unchecked Sendable {}
+
+extension swiftrocks.TransactionDB: @unchecked Sendable {
     @inlinable
     public func Put(
         _ writeOptions: rocksdb.WriteOptions, _ key: rocksdb.Slice,
