@@ -40,14 +40,14 @@ public class Iterator: IteratorProtocol {
 
     @inlinable
     public func next() -> (key: rocksdb.Slice, value: rocksdb.Slice)? {
-        if first {
+        if _slowPath(first) {
             guard swiftrocks.Valid(rocksDBIterator) else {
                 return nil
             }
             first = false
         } else {
             swiftrocks.Next(rocksDBIterator)
-            guard swiftrocks.Valid(rocksDBIterator) else {
+            if _slowPath(!swiftrocks.Valid(rocksDBIterator)) {
                 return nil
             }
         }
