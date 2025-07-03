@@ -23,7 +23,7 @@ extension swiftrocks.TransactionDBOpenResult {
     }
 }
 
-public class Iterator: IteratorProtocol {
+public final class Iterator: IteratorProtocol {
     @usableFromInline
     let handle: swiftrocks.Iterator
     @usableFromInline
