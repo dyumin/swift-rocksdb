@@ -201,6 +201,7 @@ var rocksdbExclude = [
     "./rocksdb/util/timer_test.cc",
     "./rocksdb/util/udt_util_test.cc",
     "./rocksdb/util/work_queue_test.cc",
+    "./rocksdb/util/compression_test.cc",
     "./rocksdb/utilities/agg_merge/agg_merge_test.cc",
     "./rocksdb/utilities/backup/backup_engine_test.cc",
     "./rocksdb/utilities/blob_db/blob_db_test.cc",
