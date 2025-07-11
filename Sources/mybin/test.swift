@@ -43,6 +43,7 @@ struct App {
         let db = dbOpenResult.db
         defer {
             handles.forEach { swiftrocks.DestroyColumnFamilyHandle(db, $0) }
+            swiftrocks.Close(db)
         }
 
         status = db.EnableAutoCompaction(handles)

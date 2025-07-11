@@ -79,6 +79,16 @@ Open(const Options &options, const TransactionDBOptions &txn_db_options,
   return {TransactionDB(dbptr), std::move(status)};
 }
 
+inline Status
+Close(const TransactionDB &transactionDB) noexcept {
+    return transactionDB->Close();
+}
+
+inline Status
+Close(const DB &db) noexcept {
+    return db->Close();
+}
+
 inline DBOpenResult
 OpenForReadOnly(const Options &options, const std::string &name,
                 bool error_if_wal_file_exists = false) noexcept {

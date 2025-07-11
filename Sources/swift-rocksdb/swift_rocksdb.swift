@@ -234,6 +234,12 @@ extension swiftrocks.TransactionDB: @unchecked Sendable {
     {
         return swiftrocks.GetProperty(self, columnFamily, property, value)
     }
+    
+    @inlinable
+    public func Close() -> rocksdb.Status
+    {
+        return swiftrocks.Close(self)
+    }
 }
 
 extension rocksdb.Slice {
