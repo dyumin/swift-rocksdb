@@ -42,7 +42,7 @@ import rocksdb
     #expect(dbOpenResult.status.ok())
     let db = dbOpenResult.db
     defer {
-        handles.forEach { swiftrocks.DestroyColumnFamilyHandle(db, $0) }
+        handles.forEach { #expect(swiftrocks.DestroyColumnFamilyHandle(db, $0).ok()) }
         #expect(swiftrocks.Close(db).ok())
     }
     

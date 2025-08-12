@@ -245,7 +245,7 @@ extension swiftrocks.TransactionDB: @unchecked Sendable {
 extension rocksdb.Slice {
     @inlinable
     public func asArray() -> [UInt8] {
-        if self.empty() {
+        if _slowPath(self.empty()) {
             return []
         }
         return .init(

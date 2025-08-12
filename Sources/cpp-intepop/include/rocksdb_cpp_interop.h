@@ -24,10 +24,10 @@ using Iterator = std::shared_ptr<Iterator>;
 using TransactionDB = std::unique_ptr<TransactionDB>;
 using DB = std::unique_ptr<DB>;
 
-inline void
+inline Status
 DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
                           ColumnFamilyHandle *columnFamilyHandle) noexcept {
-    transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
+    return transactionDB->DestroyColumnFamilyHandle(columnFamilyHandle);
 }
 
 inline bool GetProperty(const TransactionDB &transactionDB,
