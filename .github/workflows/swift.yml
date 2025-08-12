@@ -1,4 +1,4 @@
-name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+name: Build and Test
 
 on:
   push:
@@ -8,10 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
+      max-parallel: 2
       matrix:
         os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
       with:
