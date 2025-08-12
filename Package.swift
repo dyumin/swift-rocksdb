@@ -250,7 +250,6 @@ let package = Package(
     name: "swift-rocksdb",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-        .executable(name: "mybin", targets: ["mybin"]),
         .library(
             name: "rocksdb",
             targets: ["rocksdb"]),
@@ -262,12 +261,6 @@ let package = Package(
             targets: ["cpp-intepop"]),
     ],
     targets: [
-        .executableTarget(
-            name: "mybin",
-            dependencies: [
-                "rocksdb", "cpp-intepop", "swift-rocksdb",
-            ],
-            swiftSettings: executableSettings),
         .target(
             name: "swift-rocksdb",
             dependencies: [
@@ -276,7 +269,8 @@ let package = Package(
             swiftSettings: librarySettings),
         .testTarget(
             name: "swift-rocksdbTests",
-            dependencies: ["swift-rocksdb"]
+            dependencies: ["rocksdb", "cpp-intepop", "swift-rocksdb"],
+            swiftSettings: executableSettings
         ),
         .target(
             name: "rocksdb",
