@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-22.04, macos-latest] # ubuntu-latest currently doesnt work, https://github.com/swift-actions/setup-swift/issues/677
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
