@@ -307,6 +307,7 @@ let package = Package(
                 .define("IOS_CROSS_COMPILE", .when(platforms: [.iOS])),  // useless
                 .define("NDEBUG", .when(configuration: .release)),
                 .headerSearchPath("./rocksdb"),
+                .unsafeFlags(["-O3"], .when(configuration: .release))
             ],
             cxxSettings: [
                 .define(
@@ -322,6 +323,7 @@ let package = Package(
                 .define("NDEBUG", .when(configuration: .release)),
                 .define("ROCKSDB_USE_RTTI", .when(configuration: .debug)),
                 .headerSearchPath("./rocksdb"),
+                .unsafeFlags(["-O3"], .when(configuration: .release))
             ],
             linkerSettings: [
                 .linkedLibrary("m")
@@ -338,7 +340,8 @@ let package = Package(
             publicHeadersPath: "./include",
             cxxSettings: [
                 .unsafeFlags(
-                    ["-Xclang", "-fno-cxx-modules"], .when(platforms: [.linux]))
+                    ["-Xclang", "-fno-cxx-modules"], .when(platforms: [.linux])),
+                .unsafeFlags(["-O3"], .when(configuration: .release))
             ]),
     ],
 
