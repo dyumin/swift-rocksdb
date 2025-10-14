@@ -21,7 +21,7 @@ inline Status ListColumnFamilies(const DBOptions &db_options,
 using Transaction = std::shared_ptr<Transaction>;
 using Iterator = std::shared_ptr<Iterator>;
 
-using TransactionDB = std::unique_ptr<TransactionDB>;
+using TransactionDB = std::shared_ptr<TransactionDB>;
 using DB = std::unique_ptr<DB>;
 
 inline Status
