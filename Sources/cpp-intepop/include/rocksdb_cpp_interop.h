@@ -24,6 +24,11 @@ using Iterator = std::shared_ptr<Iterator>;
 using TransactionDB = std::shared_ptr<TransactionDB>;
 using DB = std::unique_ptr<DB>;
 
+inline ColumnFamilyHandle *
+DefaultColumnFamily(const TransactionDB &transactionDB) noexcept {
+  return transactionDB->DefaultColumnFamily();
+}
+
 inline Status
 DestroyColumnFamilyHandle(const TransactionDB &transactionDB,
                           ColumnFamilyHandle *columnFamilyHandle) noexcept {
