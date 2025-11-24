@@ -105,6 +105,7 @@ OpenForReadOnly(const Options &options, const std::string &name,
 
 inline Status Get(const DB &db, const ReadOptions &options, const Slice &key,
                   std::string *value) noexcept {
+    
     return db->Get(options, key, value);
 }
 
@@ -114,6 +115,18 @@ BeginTransaction(const TransactionDB &transactionDB,
                  const TransactionOptions &txn_options) noexcept {
     return Transaction(
                        transactionDB->BeginTransaction(write_options, txn_options));
+}
+
+inline Status
+FlushWAL(const TransactionDB &transactionDB,
+                 const FlushWALOptions &flushWALOptions) noexcept {
+    return transactionDB->FlushWAL(flushWALOptions);
+}
+
+inline Status
+Flush(const TransactionDB &transactionDB,
+         const FlushOptions &fopts, const ColumnFamilyHandlePointerVector &column_families) noexcept {
+    return transactionDB->Flush(fopts, column_families);
 }
 
 inline Iterator GetIterator(const Transaction &transaction,

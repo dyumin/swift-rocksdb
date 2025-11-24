@@ -215,6 +215,21 @@ extension swiftrocks.TransactionDB: @unchecked Sendable {
     }
     
     @inlinable
+    public func FlushWAL(
+        _ flushWALOptions: rocksdb.FlushWALOptions
+    ) -> rocksdb.Status {
+        return swiftrocks.FlushWAL(self, flushWALOptions)
+    }
+    
+    @inlinable
+    public func Flush(
+        _ fopts: rocksdb.FlushOptions,
+        _ columnFamilies: swiftrocks.ColumnFamilyHandlePointerVector,
+    ) -> rocksdb.Status {
+        return swiftrocks.Flush(self, fopts, columnFamilies)
+    }
+    
+    @inlinable
     public func CreateColumnFamilies(
         _ columnFamilyOptions: rocksdb.ColumnFamilyOptions,
         _ columnFamilyNames: swiftrocks.ColumnFamiliesVector,
