@@ -12,7 +12,7 @@ extension rocksdb.Status: Error, CustomStringConvertible, @unchecked Sendable {
 
 extension swiftrocks.TransactionDBOpenResult {
     @inlinable
-    public consuming func asResult() -> Result<
+    public func asResult() -> Result<
         swiftrocks.TransactionDB, rocksdb.Status
     > {
         if self.status.ok() {
