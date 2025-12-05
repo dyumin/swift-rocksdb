@@ -66,6 +66,7 @@ inline uint32_t GetID(const ColumnFamilyHandle *const handle) noexcept {
 
 inline const std::string &
 GetName(const ColumnFamilyHandle *const handle) noexcept {
+    
     return handle->GetName();
 }
 
@@ -80,6 +81,16 @@ Open(const Options &options, const TransactionDBOptions &txn_db_options,
     rocksdb::TransactionDB *dbptr = nullptr;
     auto status = rocksdb::TransactionDB::Open(options, txn_db_options, dbname,
                                                column_families, handles, &dbptr);
+    
+    return {TransactionDB(dbptr), std::move(status)};
+}
+
+inline TransactionDBOpenResult
+Open(const Options &options, const TransactionDBOptions &txn_db_options,
+     const std::string &dbname) noexcept {
+    
+    rocksdb::TransactionDB *dbptr = nullptr;
+    auto status = rocksdb::TransactionDB::Open(options, txn_db_options, dbname, &dbptr);
     
     return {TransactionDB(dbptr), std::move(status)};
 }
@@ -198,6 +209,10 @@ inline Iterator NewIterator(const TransactionDB &transactionDB,
                             const ReadOptions &options,
                             ColumnFamilyHandle *column_family) noexcept {
     return Iterator(transactionDB->NewIterator(options, column_family));
+}
+
+inline Iterator NewIterator(const TransactionDB &transactionDB, const ReadOptions &read_options) noexcept {
+    return Iterator(transactionDB->NewIterator(read_options));
 }
 
 inline Status EnableAutoCompaction(

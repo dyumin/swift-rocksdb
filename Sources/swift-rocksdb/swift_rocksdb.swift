@@ -198,6 +198,15 @@ extension swiftrocks.TransactionDB: @unchecked Sendable {
     }
     
     @inlinable
+    public func NewIterator(
+        _ readOptions: rocksdb.ReadOptions
+    )
+    -> swiftrocks.Iterator
+    {
+        return swiftrocks.NewIterator(self, readOptions)
+    }
+    
+    @inlinable
     public func BeginTransaction(
         _ writeOptions: rocksdb.WriteOptions,
         _ transactionOptions: rocksdb.TransactionOptions

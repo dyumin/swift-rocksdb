@@ -88,3 +88,76 @@ import rocksdb
     
     #expect(transaction.Commit().ok())
 }
+
+@Test func next_on_invalid_iterator() async throws {
+    var options = rocksdb.Options()
+    options.create_if_missing = true
+    options.create_missing_column_families = true
+    
+    let tmpDBPath = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+    defer {
+        try? FileManager.default.removeItem(at: tmpDBPath)
+    }
+    
+    let dbOpenResult = swiftrocks.Open(
+        options, rocksdb.TransactionDBOptions(), std.string(tmpDBPath.path))
+    #expect(dbOpenResult.status.ok())
+    let db = dbOpenResult.db
+    defer {
+        #expect(swiftrocks.Close(db).ok())
+    }
+    let iterator = db.NewIterator(rocksdb.ReadOptions())
+    #expect(iterator.count { _ in true } == 0)
+}
+
+
+@Test func StatusDescription() async throws {
+    #expect("\(rocksdb.Status.OK())" == "OK" )
+}
+
+
+@Test func asResult_success() async throws {
+    var options = rocksdb.Options()
+    options.create_if_missing = true
+    options.create_missing_column_families = true
+    
+    let tmpDBPath = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+    defer {
+        try? FileManager.default.removeItem(at: tmpDBPath)
+    }
+    
+    let dbOpenResult = swiftrocks.Open(
+        options, rocksdb.TransactionDBOptions(), std.string(tmpDBPath.path))
+    let result = dbOpenResult.asResult()
+    
+    switch result {
+    case .success(let db):
+        #expect(swiftrocks.Close(db).ok())
+    case .failure(_):
+        #expect(Bool(false))
+    }
+}
+
+@Test func asResult_failure() async throws {
+    var options = rocksdb.Options()
+    options.create_if_missing = true
+    options.create_missing_column_families = true
+    
+    let dbOpenResult = swiftrocks.Open(
+        options, rocksdb.TransactionDBOptions(), "")
+    let result = dbOpenResult.asResult()
+    
+    switch result {
+    case .success(_):
+        #expect(Bool(false))
+    case .failure(let error):
+        #expect(error == .PathNotFound())
+    }
+}
+
+
+@Test func rocksdb_Slice_asarray() async throws {
+    #expect(rocksdb.Slice().asArray().isEmpty)
+}
+
+
