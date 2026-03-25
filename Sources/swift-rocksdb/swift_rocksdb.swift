@@ -258,6 +258,16 @@ extension swiftrocks.TransactionDB: @unchecked Sendable {
     {
         return swiftrocks.GetProperty(self, columnFamily, property, value)
     }
+
+        @inlinable
+    public func GetProperty(
+        _ property: rocksdb.Slice,
+        _ value: UnsafeMutablePointer<std.string>!
+    )
+        -> Bool
+    {
+        return swiftrocks.GetProperty(self, property, value)
+    }
     
     @inlinable
     public func Close() -> rocksdb.Status
