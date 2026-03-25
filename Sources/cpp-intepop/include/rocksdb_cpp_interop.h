@@ -49,6 +49,11 @@ inline bool GetProperty(const TransactionDB &transactionDB,
     return transactionDB->GetProperty(column_family, property, value);
 }
 
+inline bool GetProperty(const TransactionDB &transactionDB,
+                        const Slice &property, std::string *value) noexcept {
+    return transactionDB->GetProperty(property, value);
+}
+
 inline Status
 CreateColumnFamilies(const TransactionDB &transactionDB,
                      const ColumnFamilyOptions &options,
